@@ -1,0 +1,103 @@
+Résumé
+
+jeu:
+
+nombre de joueurs 2
+
+
+caractéristiques du joueur(exemple):
+
+-------------
+pseudonyme
+
+identité??
+
+score
+
+liste d'actions
+
+---------------
+
+
+un pseudonyme unique et obligatoire par partie
+
+
+score disponible
+
+
+methode ajax
+
+
+action joueur -> ajax -> enregistrement en base de données 
+
+
+rafraichissement écran -> ajax -> récupérations des dernieres positions 
+
+
+
+
+points bloquants: 
+
+-l'organisation du renvoi des positions
+
+
+petite idée:
+
+à tout moment, on peut stocker les différentes actions
+
+lors du rafraichissement, toute les actions envoyées sont effacées de la liste
+
+-création de la session de jeu:
+
+on créera une instance de classe qui contiendra deux joueurs et qui représentera la partie.
+
+
+
+besoins 
+
+1) voir si on peut adapter le jeu existant pour un mode 2 joueurs ( nouveaux requins ou changement du jeu )
+
+2) tester l'architecture de fonctionnement avec le rafraichissement avec un joueur
+
+3) tester avec plusieurs joueurs
+
+
+
+Objectifs:
+
+23/08
+
+1) voir si on peut adapter le jeu pour un mode deux joueurs
+
+2) modéliser l'architecture serveur de l'appli pour un joueur (session, réponses)
+
+3) implémentation de la partie back avec tests 
+
+
+24/08
+
+1) suite implémentation de la partie back avec tests
+
+2) finalisation de la partie back, 
+
+2) préparation de l'implémentation pour 2 joueurs
+
+
+25/08
+
+1) implémentation pour 2 joueurs 
+
+
+26/08
+
+1) tests et nettoyage de code 
+ 
+
+27/08 
+
+1) finalisation
+
+
+
+
+
