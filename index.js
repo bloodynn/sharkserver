@@ -9,49 +9,35 @@ app.use(session({
   secret: 'keyboard cat'
 }))
 
-let inputList = [];
+/*variable globale pour l'input
+* à l'avenir, ce sera une variable de session
+*/
+global.input = null;
 
-app.get('/albums',(request, response) => {
-  const MongoClient = require('mongodb').MongoClient;
-  (async() =>{
-    const albums = await MongoClient.connect('mongodb://localhost:27017/myAlbums',{ useNewUrlParser: true });
-      const myDb = albums.db('myAlbums');
-      try{
-        const result = await myDb.collection('myAlbums').find().toArray(function(err, result){
-          response.send(result);
-        });
-      }
-      finally{
-        albums.close();
-      }
-  })().catch(err => console.error(err)); 
-})
-
+/* endpoint de réception de la direction */
 app.post('/session/inputs',(request,response) => {
-
   console.log(request.body)
-  if(inputList.length === 0){
-    this.inputList=[]
-  }
-  this.inputList.push(request.body.input)
+  input=request.body;
+  /*permet les tests en local avec des serveurs en local*/
   response.set({"Access-Control-Allow-Origin": "*"})
   response.send("reussi")
 
 })
 
+/* endpoint de la demande de la direction */
 app.get('/session/inputs',(request,response) => {
-  const res = this.inputList;
-  console.log("get:",res)
-  this.inputList = [];
-  response.set({"Access-Control-Allow-Origin": "*"})
-  response.send(res)
+  const res = input;
+  input ={};
+  console.log("get:",res);
+  /*permet les tests en local avec des serveurs en local*/
+  response.set({"Access-Control-Allow-Origin": "*"});
+  response.send(res);
 
 })
 
 app.listen(port, (err) => {
   if (err) {
-    return console.log('something bad happened', err)
+    return console.log('something bad happened', err);
   }
-
-  console.log(`server is listening on ${port}`)
+  console.log(`server is listening on ${port}`);
 })
