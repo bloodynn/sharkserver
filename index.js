@@ -16,7 +16,7 @@ global.input = null;
 
 /* endpoint de réception de la direction */
 app.post('/session/inputs',(request,response) => {
-  console.log(request.body)
+  console.log("post:",request.body)
   input=request.body;
   /*permet les tests en local avec des serveurs en local*/
   response.set({"Access-Control-Allow-Origin": "*"})
@@ -27,7 +27,7 @@ app.post('/session/inputs',(request,response) => {
 /* endpoint de la demande de la direction */
 app.get('/session/inputs',(request,response) => {
   const res = input;
-  input ={};
+  // input ={};
   console.log("get:",res);
   /*permet les tests en local avec des serveurs en local*/
   response.set({"Access-Control-Allow-Origin": "*"});
