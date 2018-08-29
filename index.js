@@ -70,13 +70,14 @@ app.post('/session/inputs',(request,response) => {
     input[request.session.playerNumber-1]=request.body;
     request.session.save()
     response.set('Access-Control-Allow-Credentials', 'true');
-    response.set({"Access-Control-Allow-Origin": "*"})
+    response.set({"Access-Control-Allow-Origin":  request.headers.origin})
     response.send("reussi")
     console.log("post:",request.body)
   }
   else{
     request.session.save()
-    response.set({"Access-Control-Allow-Origin": "*"})
+    response.set('Access-Control-Allow-Credentials', 'true');
+    response.set({"Access-Control-Allow-Origin": request.headers.origin})
     response.send("plus d'espace joueur disponibles")
   }
 })
@@ -87,7 +88,8 @@ app.get('/session/inputs',(request,response) => {
   // input ={};
   console.log("get:",res);
   /*permet les tests en local avec des serveurs en local*/
-  response.set({"Access-Control-Allow-Origin": "*"});
+  response.set('Access-Control-Allow-Credentials', 'true');
+  response.set({"Access-Control-Allow-Origin": request.headers.origin});
   response.send(res);
 
 })
