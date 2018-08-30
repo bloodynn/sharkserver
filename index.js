@@ -84,7 +84,10 @@ app.post('/session/inputs',(request,response) => {
 
 /* endpoint de la demande de la direction */
 app.get('/session/inputs',(request,response) => {
-  const res = input;
+  const res = {
+    inputs: input,
+    fishRandom : Math.random()
+  }
   // input ={};
   console.log("get:",res);
   /*permet les tests en local avec des serveurs en local*/
