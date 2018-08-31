@@ -22,37 +22,49 @@ app.use(session({
 global.input = [];
 
 const ON_WAIT = "waiting"
+const READY = "ready"
 const ON_PLAY = "playing"
 
 global.game = {
   state : ON_WAIT,
-  players: 0
+  players: []
 };
 
 /*endpoint enregistrement du joueur*/
 app.post('/session/player',(request,response) => {
-  
-  request.session.name = response.body.name;
-  if (game.player1 !== null){
-    game.player1 = response.body.name;
-    request.session.playerNumber = 1;
+  let textResponse
+  if (game.players.length < 2){
+      if (!isExist(request.body.pseudo)){
+        game.players.push(
+          {
+            pseudo:request.body.pseudo,
+            score: 0
+          }
+        )
+        request.session.playerNumber = game.players.length
+        console.log("player",request.session.playerNumber)
+        textResponse = "welcome " + game.players[request.session.playerNumber-1].pseudo + "player:" + request.session.playerNumber
+        console.log("here comes a new challenger")
+      }
+      else{
+        textResponse = "le pseudo existe"
+      }
   }
   else{
-    game.player2 = response.body.name;
-    request.session.playerNumber = 2;
-  }
-  response.set({"Access-Control-Allow-Origin": "*"})
-  response.send("Joueur numero:",request.session.playerNumber);
+    textResponse = "il n'y a plus de place"
+  } 
+  response.set('Access-Control-Allow-Credentials', 'true');
+  response.send(textResponse);
 })
 
 /*endpoit de la demande d'état de la partie*/
 app.get('/session/state',(request,response) => {
-  response.set({"Access-Control-Allow-Origin": "*"});
+  response.set('Access-Control-Allow-Credentials', 'true');
   response.send(game.state);
 })
 
 /*endpoit de la demande de la partie*/
-app.get('/session/state',(request,response) => {
+app.post('/session/',(request,response) => {
   response.set({"Access-Control-Allow-Origin": "*"});
   response.send(input);
 })
@@ -103,3 +115,10 @@ app.listen(port, (err) => {
   }
   console.log(`server is listening on ${port}`);
 })
+
+isExist = function(pseudo){
+  /* cette fonction doit aller chercher dans la base de donnée
+  *  revoie true si  le pseudo existe
+  */
+  return false;
+};
