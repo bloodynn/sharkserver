@@ -1,6 +1,8 @@
 const express = require('express')
 var session = require('express-session')
 var bodyParser = require('body-parser');
+
+
 const app = express()
 const port = 3000
 
@@ -19,7 +21,7 @@ app.use(session({
 /*variable globale pour l'input
 * à l'avenir, ce sera une variable de session
 */
-global.input = [];
+//global.input = [];
 
 const ON_WAIT = "waiting"
 const ON_PLAY = "playing"
@@ -67,7 +69,18 @@ app.post('/session/inputs',(request,response) => {
       console.log("here comes a new challenger")
       console.log(request.session)
     }
-    input[request.session.playerNumber-1]=request.body;
+    const MongoClient = require('mongodb').MongoClient;
+    input = (async() =>{
+    const game = await MongoClient.connect('mongodb://localhost:27017/sharkgamedb',{ useNewUrlParser: true });
+      const myDb = game.db('sharkgamedb');
+      try{
+        const result = await myDb.collection('sharkgamedb').update({'player':request.session.playerNumber},{$set:{'input':request.body}})
+      }
+      finally{
+        game.close();
+      }
+    })().catch(err => console.error(err));
+    //input[request.session.playerNumber-1]=request.body;
     request.session.save()
     response.set('Access-Control-Allow-Credentials', 'true');
     response.set({"Access-Control-Allow-Origin":  request.headers.origin})
@@ -84,6 +97,20 @@ app.post('/session/inputs',(request,response) => {
 
 /* endpoint de la demande de la direction */
 app.get('/session/inputs',(request,response) => {
+   const MongoClient = require('mongodb').MongoClient;
+   input = (async() =>{
+    const game = await MongoClient.connect('mongodb://localhost:27017/sharkgamedb',{ useNewUrlParser: true });
+      const myDb = game.db('sharkgamedb');
+      try{
+
+        const input = await myDb.collection('sharkgamedb').find().toArray(function(err, result){
+        });
+        console.log(input);
+      }
+      finally{
+        game.close();
+      }
+  })().catch(err => console.error('error',err)); 
   const res = {
     inputs: input,
     fishRandom : Math.random()
@@ -96,6 +123,26 @@ app.get('/session/inputs',(request,response) => {
   response.send(res);
 
 })
+
+app.get('/albums',(request, response) => {
+  const MongoClient = require('mongodb').MongoClient;
+  result = (async() =>{
+    const game = await MongoClient.connect('mongodb://localhost:27017/sharkgamedb',{ useNewUrlParser: true });
+      const myDb = game.db('sharkgamedb');
+      try{
+        const result = await myDb.collection('sharkgamedb').find().toArray(function(err, result){
+        });
+      }
+      finally{
+        game.close();
+      }
+  })().catch(err => console.error(err)); 
+/*permet les tests en local avec des serveurs en local*/
+response.set('Access-Control-Allow-Credentials', 'true');
+response.set({"Access-Control-Allow-Origin": request.headers.origin});
+response.send(result);
+})
+
 
 app.listen(port, (err) => {
   if (err) {

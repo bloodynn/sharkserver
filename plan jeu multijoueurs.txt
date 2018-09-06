@@ -71,6 +71,8 @@ Objectifs:
 
 2) modéliser l'architecture serveur de l'appli pour un joueur (session, réponses)
 
+
+
 3) implémentation de la partie back avec tests 
 
 
