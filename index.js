@@ -67,6 +67,8 @@ app.post('/session/inputs',(request,response) => {
       console.log("here comes a new challenger")
       console.log(request.session)
     }
+  }
+  if(request.session.playerNumber){
     input[request.session.playerNumber-1]=request.body;
     request.session.save()
     response.set('Access-Control-Allow-Credentials', 'true');
@@ -88,9 +90,10 @@ app.get('/session/inputs',(request,response) => {
     inputs: input,
     fishRandom : Math.random()
   }
-  // input ={};
+   //input ={};
   console.log("get:",res);
   /*permet les tests en local avec des serveurs en local*/
+  request.session.save()
   response.set('Access-Control-Allow-Credentials', 'true');
   response.set({"Access-Control-Allow-Origin": request.headers.origin});
   response.send(res);
